@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: archlinux
-      options: 0
+      options: -u 0
       volumes:
         - /sys/fs/cgroup:/sys/fs/cgroup
 
