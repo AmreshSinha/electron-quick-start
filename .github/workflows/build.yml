@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Make Electron Folder Accessible
-        uses: chmod a+rwx /github/home/.cache/electron/
+        run: chmod a+rwx /github/home/.cache/electron/
 
       - name: Check out Git repository
         uses: actions/checkout@v1
