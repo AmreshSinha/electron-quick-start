@@ -17,7 +17,7 @@
     "demo"
   ],
   "email": "example@example.com",
-  "author": "GitHub",
+  "author": "GitHub <support@github.com>",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^16.0.5",
@@ -35,5 +35,8 @@
       },
       "target": "pacman"
     }
+  },
+  "dependencies": {
+    "electron-updater": "^4.6.1"
   }
 }
