@@ -45,38 +45,94 @@ app.on('window-all-closed', function () {
 
 
 
-// Auto Updater
-const sendStatusToWindow = (text) => {
-  log.info(text)
-  if (mainWindow) {
-    mainWindow.webContents.send('message', text);
-  }
+
+
+
+
+// Menu
+
+let template = []
+if (process.platform === 'darwin') {
+  // OS X
+  const name = app.getName();
+  template.unshift({
+    label: name,
+    submenu: [
+      {
+        label: 'About ' + name,
+        role: 'about'
+      },
+      {
+        label: 'Quit',
+        accelerator: 'Command+Q',
+        click() { app.quit(); }
+      },
+    ]
+  })
 }
 
+
+
+//-------------------------------------------------------------------
+// Open a window that displays the version
+//
+// THIS SECTION IS NOT REQUIRED
+//
+// This isn't required for auto-updates to work, but it's easier
+// for the app to show a window than to have to click "About" to see
+// that updates are working.
+//-------------------------------------------------------------------
+let win;
+function sendStatusToWindow(text) {
+  log.info(text);
+  win.webContents.send('message', text);
+}
+function createDefaultWindow() {
+  win = new BrowserWindow({
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    }
+  });
+  win.webContents.openDevTools();
+  win.on('closed', () => {
+    win = null;
+  });
+  win.loadURL(`file://${__dirname}/version.html#v${app.getVersion()}`);
+  return win;
+}
 autoUpdater.on('checking-for-update', () => {
   sendStatusToWindow('Checking for update...');
-});
-autoUpdater.on('update-available', info => {
+})
+autoUpdater.on('update-available', (info) => {
   sendStatusToWindow('Update available.');
-});
-autoUpdater.on('update-not-available', info => {
+})
+autoUpdater.on('update-not-available', (info) => {
   sendStatusToWindow('Update not available.');
+})
+autoUpdater.on('error', (err) => {
+  sendStatusToWindow('Error in auto-updater. ' + err);
+})
+autoUpdater.on('download-progress', (progressObj) => {
+  let log_message = "Download speed: " + progressObj.bytesPerSecond;
+  log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
+  log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+  sendStatusToWindow(log_message);
+})
+autoUpdater.on('update-downloaded', (info) => {
+  sendStatusToWindow('Update downloaded');
 });
-autoUpdater.on('error', err => {
-  sendStatusToWindow(`Error in auto-updater: ${err.toString()}`);
+app.on('ready', function() {
+  // Create the Menu
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
+
+  createDefaultWindow();
 });
-autoUpdater.on('download-progress', progressObj => {
-  sendStatusToWindow(
-    `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred} + '/' + ${progressObj.total} + )`
-  );
-});
-autoUpdater.on('update-downloaded', info => {
-  sendStatusToWindow('Update downloaded; will install now');
+app.on('window-all-closed', () => {
+  app.quit();
 });
 
-autoUpdater.on('update-downloaded', info => {
-  // Wait 5 seconds, then quit and install
-  // In your application, you don't need to wait 500 ms.
-  // You could call autoUpdater.quitAndInstall(); immediately
-  autoUpdater.quitAndInstall();
+app.on('ready', function()  {
+  autoUpdater.checkForUpdatesAndNotify();
 });
