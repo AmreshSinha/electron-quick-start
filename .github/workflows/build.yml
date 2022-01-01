@@ -5,16 +5,16 @@ on: push
 jobs:
   release:
     runs-on: ubuntu-latest
-    container:
-      image: archlinux
-      options: -u 0
-      volumes:
-        - /sys/fs/cgroup:/sys/fs/cgroup
+    # container:
+    #   image: archlinux
+    #   options: --privileged
+    #   volumes:
+    #     - /sys/fs/cgroup:/sys/fs/cgroup
 
 
     steps:
-      - name: Make Electron Folder Accessible
-        run: chmod a+rwx /github/home/
+      - name: Install libarchive-tools
+        run: sudo apt install libarchive-tools
 
       - name: Check out Git repository
         uses: actions/checkout@v1
