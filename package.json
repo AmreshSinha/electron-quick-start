@@ -4,7 +4,9 @@
   "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -14,9 +16,24 @@
     "tutorial",
     "demo"
   ],
+  "email": "example@example.com",
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^16.0.5"
+    "electron": "^16.0.5",
+    "electron-builder": "^22.14.5"
+  },
+  "build": {
+    "appId": "net.amreshsinha.electron-quick-start",
+    "productName": "Electron Quickstart",
+    "npmRebuild": false,
+    "linux": {
+      "category": "Office",
+      "desktop": {
+        "Icon": "joplin",
+        "MimeType": "x-scheme-handler/joplin;"
+      },
+      "target": "pacman"
+    }
   }
 }
