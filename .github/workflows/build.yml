@@ -3,13 +3,18 @@ on: [push, pull_request]
 
 jobs:
   build_on_linux:
-    runs-on: arch-latest
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux
+      options: --privileged
+      volumes:
+        - /sys/fs/cgroup:/sys/fs/cgroup
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@master
-      with:
-        node-version: 16
-    - name: install dependencies
-      run: yarn install
-    - name: build
-      run: yarn dist
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@master
+        with:
+          node-version: 16
+      - name: install dependencies
+        run: yarn install
+      - name: build
+        run: yarn dist
