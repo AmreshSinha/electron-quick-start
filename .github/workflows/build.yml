@@ -5,8 +5,8 @@ on: push
 jobs:
   release:
     runs-on: ubuntu-latest
-    container:
-      image: archlinux
+    # container:
+    #   image: archlinux
 
 
     steps:
