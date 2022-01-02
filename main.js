@@ -73,6 +73,7 @@ if (process.platform === 'darwin') {
 
 
 
+
 //-------------------------------------------------------------------
 // Open a window that displays the version
 //
