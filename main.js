@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, Menu} = require('electron')
 const path = require('path')
 const { autoUpdater } = require("electron-updater")
 
@@ -83,6 +83,7 @@ if (process.platform === 'darwin') {
 // that updates are working.
 //-------------------------------------------------------------------
 let win;
+
 function sendStatusToWindow(text) {
   log.info(text);
   win.webContents.send('message', text);
