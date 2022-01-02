@@ -14,7 +14,10 @@ jobs:
 
     steps:
       - name: Install libarchive-tools
-        run: sudo apt install libarchive-tools
+        run: sudo apt install libarchive-tools snapd
+
+      - name: Install Snapcraft
+        run: sudo snap install snapcraft --classic
 
       - name: Check out Git repository
         uses: actions/checkout@v1
