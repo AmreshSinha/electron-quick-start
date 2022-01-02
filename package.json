@@ -34,7 +34,7 @@
         "Icon": "joplin",
         "MimeType": "x-scheme-handler/joplin;"
       },
-      "target": "snap"
+      "target": "AppImage"
     }
   },
   "dependencies": {
